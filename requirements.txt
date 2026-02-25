@@ -1,0 +1,6 @@
+numpy>=1.25
+opencv-python>=4.9
+matplotlib>=3.8
+scikit-image>=0.22
+streamlit>=1.34
+Pillow>=10.0
