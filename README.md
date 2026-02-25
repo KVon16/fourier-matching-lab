@@ -22,6 +22,9 @@ Default style is intentionally darker (less washed out). You can tune:
 - `grain_std`
 - `suppress_dc_radius`
 
+Optional pre-filtering (off by default):
+- `normalize_std` to equalize contrast before FFT
+
 ## Setup
 
 ```bash
@@ -53,6 +56,12 @@ python make_fourier_set.py --mode real --out outputs_custom_style \
   --clip-percentile 99.97 --gamma 1.35 --gain 0.62 --grain-std 0.018 --suppress-dc-radius 2
 ```
 
+Example with pre-filtering (without changing default slider settings):
+```bash
+python make_fourier_set.py --mode vistex --out outputs_vistex_prefilter \
+  --normalize-std
+```
+
 ### Synthetic fallback
 ```bash
 python make_fourier_set.py --mode synthetic --out outputs_synth
@@ -76,7 +85,7 @@ streamlit run app.py
 ```
 
 Use the app to:
-- use your `data/` image set directly via `Data folder (8 uploaded)`,
+- use your `data/` image set directly via `Lecture folder (8 uploaded)`,
 - switch to `MIT VisTex textures (16)` for more real texture practice,
 - inspect real textures and their FFT signatures,
 - upload your own image,

@@ -25,6 +25,7 @@ class StyleConfig:
     grain_std: float = 0.05
     grain_seed: int = 442
     suppress_dc_radius: int = 0
+    normalize_std: bool = False
 
 
 REAL_IMAGE_BUILDERS = {
@@ -118,7 +119,15 @@ def synthetic_patterns(size: int = 512) -> Dict[str, np.ndarray]:
 def fft_magnitude_exam_style(image: np.ndarray, style: StyleConfig | None = None) -> np.ndarray:
     style = style or StyleConfig()
     gray = _to_gray_uint8(image)
-    f = np.fft.fft2(gray.astype(np.float32))
+    signal = gray.astype(np.float32)
+
+    if style.normalize_std:
+        signal = signal - signal.mean()
+        std = signal.std()
+        if std > 1e-6:
+            signal = signal / std
+
+    f = np.fft.fft2(signal)
     fshift = np.fft.fftshift(f)
 
     # Optional tiny DC suppression avoids a saturated white center dot.

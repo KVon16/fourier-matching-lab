@@ -89,6 +89,7 @@ def main() -> None:
     parser.add_argument("--grain-std", type=float, default=0.05)
     parser.add_argument("--grain-seed", type=int, default=442)
     parser.add_argument("--suppress-dc-radius", type=int, default=0)
+    parser.add_argument("--normalize-std", action="store_true")
     args = parser.parse_args()
 
     out_dir = Path(args.out)
@@ -100,6 +101,7 @@ def main() -> None:
         grain_std=args.grain_std,
         grain_seed=args.grain_seed,
         suppress_dc_radius=args.suppress_dc_radius,
+        normalize_std=args.normalize_std,
     )
 
     if args.mode == "folder":

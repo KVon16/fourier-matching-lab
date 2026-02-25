@@ -24,7 +24,7 @@ with st.sidebar:
     source = st.radio(
         "Image source",
         [
-            "Data folder (8 uploaded)",
+            "Lecture folder (8 uploaded)",
             "MIT VisTex textures (16)",
             "Real textures",
             "Synthetic patterns",
@@ -41,6 +41,8 @@ with st.sidebar:
     grain_std = st.slider("Grain", min_value=0.0, max_value=0.3, value=0.05, step=0.002)
     suppress_dc_radius = st.slider("Center suppression radius", min_value=0, max_value=8, value=0, step=1)
     grain_seed = st.number_input("Grain seed", min_value=0, max_value=10_000, value=442, step=1)
+    st.caption("Optional pre-filtering (keeps current defaults unless enabled)")
+    normalize_std = st.checkbox("Normalize before FFT (use when spectrum looks washed out)", value=False)
 
 style = StyleConfig(
     clip_percentile=clip_percentile,
@@ -49,6 +51,7 @@ style = StyleConfig(
     grain_std=grain_std,
     grain_seed=int(grain_seed),
     suppress_dc_radius=suppress_dc_radius,
+    normalize_std=normalize_std,
 )
 
 
@@ -92,14 +95,14 @@ if source == "Upload image":
         st.code(
             f"StyleConfig(clip_percentile={style.clip_percentile:.2f}, gamma={style.gamma:.2f}, "
             f"gain={style.gain:.2f}, grain_std={style.grain_std:.3f}, grain_seed={style.grain_seed}, "
-            f"suppress_dc_radius={style.suppress_dc_radius})",
+            f"suppress_dc_radius={style.suppress_dc_radius}, normalize_std={style.normalize_std})",
             language="python",
         )
     else:
         st.info("Upload an image to begin.")
 
 else:
-    if source == "Data folder (8 uploaded)":
+    if source == "Lecture folder (8 uploaded)":
         dataset = build_dataset(size=size, style=style, folder="data")
     elif source == "MIT VisTex textures (16)":
         dataset = build_dataset(size=size, style=style, folder="data_vistex")
@@ -143,6 +146,6 @@ st.sidebar.markdown("### Current params")
 st.sidebar.code(
     f"StyleConfig(clip_percentile={style.clip_percentile:.2f}, gamma={style.gamma:.2f}, "
     f"gain={style.gain:.2f}, grain_std={style.grain_std:.3f}, grain_seed={style.grain_seed}, "
-    f"suppress_dc_radius={style.suppress_dc_radius})",
+    f"suppress_dc_radius={style.suppress_dc_radius}, normalize_std={style.normalize_std})",
     language="python",
 )
